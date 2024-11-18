@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-y4b)b49uc#1qtck_&2l*w6#td&^risj5xu3t_^t0=ls&dy4%wq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.188.179.55', 'localhost']
+ALLOWED_HOSTS = ['18.188.179.55', 'localhost','127.0.0.1']
 
 
 # Application definition
@@ -104,19 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
 CELERY_BROKER_URL = 'redis://localhost:6380/0' 
 CELERY_RESULT_BACKEND = 'redis://localhost:6380/0'
 
-CELERY_BEAT_SCHEDULE  = {
-    'send_low_priority_email': {
-        'task': 'users.tasks.send_low_priority_email',  
-         'schedule': timedelta(minutes=5), 
-          'options': {'queue': 'low_priority', 'priority': 10},
-    },
-    'send_high_priority_emails': {
-        'task': 'users.tasks.send_high_priority_email',  
-         'schedule': timedelta(minutes=5),
-        'options': {'queue': 'high_priority', 'priority': 0}, 
-    }
-
-}
 
 CELERY_TASK_ROUTES = {
     'users.tasks.send_email_high_priority': {'queue': 'high_priority'},
@@ -124,12 +111,26 @@ CELERY_TASK_ROUTES = {
 }
 
 CELERY_TASK_DEFAULT_QUEUE = 'default'
+
 CELERY_TASK_QUEUES = {
     'high_priority': {'exchange': 'high_priority', 'routing_key': 'high_priority'},
     'low_priority': {'exchange': 'low_priority', 'routing_key': 'low_priority'},
     'default': {'exchange': 'default', 'routing_key': 'default'},
 }
 
+CELERY_BEAT_SCHEDULE  = {
+    'send_high_priority_emails': {
+        'task': 'users.tasks.send_high_priority_email',  
+         'schedule': timedelta(minutes=1),
+        'options': {'queue': 'high_priority', 'priority': 0}, 
+    },
+        'send_low_priority_email': {
+        'task': 'users.tasks.send_low_priority_email',  
+         'schedule': timedelta(minutes=1), 
+          'options': {'queue': 'low_priority', 'priority': 10},
+    },
+
+}
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 

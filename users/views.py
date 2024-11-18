@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .tasks import process_csv
 
+
 def home_page(request):
     return render(request , 'home.html')
 
@@ -21,6 +22,7 @@ def upload_csv(request):
         return redirect('home')  
 
     return render(request, 'upload.html')
+
 
 
 def login_page(request):

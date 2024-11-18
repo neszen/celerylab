@@ -1,1 +1,9 @@
 env
+# Ignore Python bytecode and cache directories
+**/__pycache__/
+**/*.pyc
+.pyc
+# Ignore specific file extensions
+**/*.bak
+**/*.dat
+**/*.dir
